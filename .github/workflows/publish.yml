@@ -1,0 +1,78 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - develop
+    tags:
+      - v*
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Checkout Basilisk
+        uses: actions/checkout@v3
+        with:
+          repository: AVSLab/basilisk
+          lfs: true
+          path: basilisk
+
+      - name: Login to the Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: linux/amd64,linux/arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Build, scan, and push basilisk-dev-environment Docker artifacts.
+      - name: Extract metadata (tags, labels) for basilisk-dev-environment Docker image
+        id: basiliskDevEnvironment
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/lasp/basilisk-dev-environment
+
+      - name: Build basilisk-dev-environment Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: basilisk-dev-environment.Containerfile
+          load: true
+          tags: ${{ env.REGISTRY }}/lasp/basilisk-dev-environment:${{ github.sha }}
+
+      - name: Scan basilisk-dev-environment Docker image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/lasp/basilisk-dev-environment:${{ github.sha }}
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          severity: 'CRITICAL'
+          timeout: 10m0s
+
+      - name: Push basilisk-dev-environment Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: basilisk-dev-environment.Containerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.basiliskDevEnvironment.outputs.tags }}
+          labels: ${{ steps.basiliskDevEnvironment.outputs.labels }}
