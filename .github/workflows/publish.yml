@@ -53,7 +53,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: basilisk-dev-environment.Containerfile
+          file: basilisk-jupyterlabs.Containerfile
           load: true
           tags: ${{ env.REGISTRY }}/lasp/basilisk-dev-environment:${{ github.sha }}
 
@@ -71,7 +71,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: basilisk-dev-environment.Containerfile
+          file: basilisk-jupyterlabs.Containerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.basiliskDevEnvironment.outputs.tags }}
