@@ -42,37 +42,37 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Build, scan, and push basilisk-dev-environment Docker artifacts.
-      - name: Extract metadata (tags, labels) for basilisk-dev-environment Docker image
-        id: basiliskDevEnvironment
+      # Build, scan, and push basilisk-jupyterlabs Docker artifacts.
+      - name: Extract metadata (tags, labels) for basilisk-jupyterlabs Docker image
+        id: basiliskJupyterLabs
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/lasp/basilisk-dev-environment
+          images: ${{ env.REGISTRY }}/lasp/basilisk-jupyterlabs
 
-      - name: Build basilisk-dev-environment Docker image
+      - name: Build basilisk-jupyterlabs Docker image
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: basilisk-dev-environment.Containerfile
+          file: basilisk-jupyterlabs.Containerfile
           load: true
-          tags: ${{ env.REGISTRY }}/lasp/basilisk-dev-environment:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/lasp/basilisk-jupyterlabs:${{ github.sha }}
 
-      - name: Scan basilisk-dev-environment Docker image
+      - name: Scan basilisk-jupyterlabs Docker image
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.REGISTRY }}/lasp/basilisk-dev-environment:${{ github.sha }}
+          image-ref: ${{ env.REGISTRY }}/lasp/basilisk-jupyterlabs:${{ github.sha }}
           format: 'table'
           exit-code: '0'
           ignore-unfixed: true
           severity: 'CRITICAL'
           timeout: 10m0s
 
-      - name: Push basilisk-dev-environment Docker image
+      - name: Push basilisk-jupyterlabs Docker image
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: basilisk-dev-environment.Containerfile
+          file: basilisk-jupyterlabs.Containerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.basiliskDevEnvironment.outputs.tags }}
-          labels: ${{ steps.basiliskDevEnvironment.outputs.labels }}
+          tags: ${{ steps.basiliskJupyterLabs.outputs.tags }}
+          labels: ${{ steps.basiliskJupyterLabs.outputs.labels }}

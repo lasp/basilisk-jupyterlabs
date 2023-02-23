@@ -85,4 +85,5 @@ RUN pip install --user -r requirements.txt
 RUN pip install --user -e .
 
 WORKDIR /home/basiliskuser/python-workspace
+EXPOSE 8888
 ENTRYPOINT jupyter lab --ip 0.0.0.0 --allow-root

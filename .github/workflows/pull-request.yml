@@ -23,4 +23,4 @@ jobs:
       - name: "Apt-get Update"
         run: sudo apt-get update
       - name: "Build Container Image"
-        run: podman build -t basilisk-workspace -f basilisk-dev-environment.Containerfile .
+        run: podman build -t basilisk-jupyterlabs -f basilisk-jupyterlabs.Containerfile .
