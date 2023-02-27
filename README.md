@@ -1,7 +1,7 @@
 # basilisk-jupyterlabs
 A jupyter labs Basilisk simulation development environment 
 
-# Using the container image
+# Using The Container Image
 ## 1. Install Docker Desktop or Podman Desktop
 
 Docker: 
@@ -41,6 +41,6 @@ parameters dialogue.
 
 ![Screen grab of docker image launch parameters](docs/docker-launch-parameters-screen-grab.png)
 
-## 5. Launch Jupyterlabs in browser
+## 5. Launch JupyterLabs in browser
 
 Once launched in the console output, click/copy-and-paste the output link to a browser to launch JupyterLabs
