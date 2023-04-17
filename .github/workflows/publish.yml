@@ -50,8 +50,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/lasp/basilisk-jupyterlabs
-        tags: |
-          type=raw, value=${{ env.BSK_VERSION }}
+          tags: type=raw, value=${{ env.BSK_VERSION }}
 
       - name: Build basilisk-jupyterlabs Docker image
         uses: docker/build-push-action@v3
