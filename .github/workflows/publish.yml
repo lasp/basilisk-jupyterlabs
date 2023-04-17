@@ -9,6 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  BSK_VERSION: "2.1.7"
 
 jobs:
   publish:
@@ -24,6 +25,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: AVSLab/basilisk
+          ref: ${{ env.BSK_VERSION }}
           lfs: true
           path: basilisk
 
@@ -44,10 +46,12 @@ jobs:
 
       # Build, scan, and push basilisk-jupyterlabs Docker artifacts.
       - name: Extract metadata (tags, labels) for basilisk-jupyterlabs Docker image
-        id: basiliskJupyterLabs
+        id: metadata
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/lasp/basilisk-jupyterlabs
+        tags: |
+          type=raw, value=${{ env.BSK_VERSION }}
 
       - name: Build basilisk-jupyterlabs Docker image
         uses: docker/build-push-action@v3
@@ -74,5 +78,5 @@ jobs:
           file: basilisk-jupyterlabs.Containerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.basiliskJupyterLabs.outputs.tags }}
-          labels: ${{ steps.basiliskJupyterLabs.outputs.labels }}
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
