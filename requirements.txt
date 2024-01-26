@@ -83,7 +83,7 @@ parso==0.8.3
 patch-ng==1.17.4
 pexpect==4.8.0
 pickleshare==0.7.5
-Pillow==9.4.0
+Pillow==10.2.0
 platformdirs==2.6.2
 pluggy==1.0.0
 pluginbase==1.0.1
