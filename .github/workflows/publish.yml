@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BSK_VERSION: "2.1.7"
+  BSK_VERSION: "v2.2.1"
 
 jobs:
   publish:
