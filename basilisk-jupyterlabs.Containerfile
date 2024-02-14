@@ -17,7 +17,7 @@ ADD ./basilisk .
 
 ENV PATH="/home/basiliskuser/.local/bin:${PATH}"
 RUN pip install --upgrade pip
-RUN pip install --user conan==1.52.0
+RUN pip install --user conan==1.62.0
 
 ENV CONAN_REVISIONS_ENABLED=1
 RUN conan install . --build=missing -s build_type=Release -if dist3/conan -o opNav=False -o vizInterface=False -o autoKey=u
