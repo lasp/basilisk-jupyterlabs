@@ -1,4 +1,4 @@
-FROM python:3.10.9-bullseye AS builder
+FROM python:3.10-bullseye AS builder
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
         build-essential \
@@ -17,7 +17,7 @@ ADD ./basilisk .
 
 ENV PATH="/home/basiliskuser/.local/bin:${PATH}"
 RUN pip install --upgrade pip
-RUN pip install --user conan==1.52.0
+RUN pip install --user conan==1.62.0
 
 ENV CONAN_REVISIONS_ENABLED=1
 RUN conan install . --build=missing -s build_type=Release -if dist3/conan -o opNav=False -o vizInterface=False -o autoKey=u
@@ -26,7 +26,7 @@ RUN conan build . -if dist3/conan
 
 # Second build stage only contains pip installed bsk build products,
 # example scenarios, and support data directories
-FROM python:3.10.9-bullseye
+FROM python:3.10-bullseye
 
 LABEL org.opencontainers.artifact.description="Basilisk Jupyter Labs Python Development Environment"
 LABEL org.opencontainers.image.documentation="https://github.com/lasp/basilisk-dev-environment"
